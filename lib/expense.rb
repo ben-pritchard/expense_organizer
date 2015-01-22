@@ -32,7 +32,7 @@ class Expense
   end
 
   define_method(:join) do |category|
-    number = DB.exec("INSERT INTO join_table (category_id, expense_id) VALUES (#{category.id()}, #{@id}) RETURNING id;")
+    number = DB.exec("INSERT INTO expense_category (expense_id, category_id) VALUES (#{@id}, #{category.id()}) RETURNING id;")
     join_id = number.first().fetch("id").to_i()
     join_id.instance_of?(Fixnum)
   end

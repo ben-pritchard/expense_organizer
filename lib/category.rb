@@ -36,7 +36,30 @@ class Category
   define_method(:==) do |other_category|
     self.name().==(other_category.name()) && self.id().==(other_category.id())
   end
-  
+
+  define_method(:expense_percentage) do
+    category_expense = 0
+    total_expense = 0
+    percentage = 0.0
+
+    category_expenses_array = DB.exec("SELECT expenses.* FROM
+    categories JOIN expense_category ON (categories.id = expense_category.category_id)
+    JOIN expenses ON (expense_category.expense_id = expenses.id)
+    WHERE categories.id = #{@id};")
+    category_expenses_array.each() do |expense|
+      amount = expense.fetch("amount").to_f()
+      category_expense += amount
+    end
+
+    total_expenses_array = DB.exec("SELECT * FROM expenses;")
+    total_expenses_array.each() do |expense|
+      amount = expense.fetch("amount").to_f()
+      total_expense += amount
+    end
+    
+    percentage = 100 * category_expense / total_expense
+  end
+
   # define_singleton_method(:clear) do
   #   DB.exec("DELETE FROM categories *;")
   # end

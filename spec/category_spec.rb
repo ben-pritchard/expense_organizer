@@ -46,6 +46,28 @@ describe(Category) do
       expect(test_1).to(eq(test_2))
     end
   end
+
+  describe("#expense_percentage") do
+    it("returns the percentage of expenses spent in a category") do
+      food = Category.new({:name => "Food"})
+      food.save()
+      entertainment = Category.new({:name => "Entertainment"})
+      entertainment.save()
+      burgers_expense = Expense.new({:name => "Burgers", :amount => 5.50, :date => '2015-01-22'})
+      burgers_expense.save()
+      burgers_expense.join(food)
+      movies_expense = Expense.new({:name => "Movies", :amount => 2.50, :date => '2015-01-22'})
+      movies_expense.save()
+      movies_expense.join(entertainment)
+      burritos_expense = Expense.new({:name => "Burritos", :amount => 4.50, :date => '2015-01-22'})
+      burritos_expense.save()
+      burritos_expense.join(food)
+      plays_expense = Expense.new({:name => "Plays", :amount => 7.50, :date => '2015-01-22'})
+      plays_expense.save()
+      plays_expense.join(entertainment)
+      expect(food.expense_percentage()).to(eq(50.0))
+    end
+  end
 #
 #   describe(".clear") do
 #     it("clears the trains database of all categories in the categories table") do
