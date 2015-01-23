@@ -37,21 +37,37 @@ class Expense
     join_id.instance_of?(Fixnum)
   end
 
+  define_method(:get_categories) do
+    category_array = []
+
+    categories_tied_to_expense_array = DB.exec("SELECT categories.* FROM
+    expenses JOIN expense_category ON (expenses.id = expense_category.expense_id)
+    JOIN categories ON (expense_category.category_id = categories.id)
+    WHERE expenses.id = #{@id};")
+    categories_tied_to_expense_array.each() do |category|
+      name = category.fetch("name")
+      category_array.push(Category.new({:name => name}))
+    end
+    category_array
+  end
+
+  define_singleton_method(:find) do |expense_id|
+    found_expense = nil
+    Expense.all().each() do |expense|
+      if expense.id().==(expense_id)
+        found_expense = expense
+      end
+    end
+    found_expense
+  end
+
+
 
   # define_singleton_method(:clear) do
   #   DB.exec("DELETE FROM expenses *;")
   # end
   #
-  # define_singleton_method(:find) do |expense_id|
-  #   found_expense = nil
-  #   Expense.all().each() do |expense|
-  #     if expense.id().==(expense_id)
-  #       found_expense = expense
-  #     end
-  #   end
-  #   found_expense
-  # end
-  #
+
 
   #
   # define_method(:list_category_names) do

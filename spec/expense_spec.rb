@@ -61,6 +61,40 @@ describe(Expense) do
     end
   end
 
+  describe("#get_categories") do
+    it("returns all the categories associated with the expense") do
+      food = Category.new({:name => "Food"})
+      food.save()
+      entertainment = Category.new({:name => "Entertainment"})
+      entertainment.save()
+      burgers_expense = Expense.new({:name => "Burgers", :amount => 5.50, :date => '2015-01-22'})
+      burgers_expense.save()
+      burgers_expense.join(food)
+      burgers_expense.join(entertainment)
+      movies_expense = Expense.new({:name => "Movies", :amount => 2.50, :date => '2015-01-22'})
+      movies_expense.save()
+      movies_expense.join(entertainment)
+      burritos_expense = Expense.new({:name => "Burritos", :amount => 4.50, :date => '2015-01-22'})
+      burritos_expense.save()
+      burritos_expense.join(food)
+      plays_expense = Expense.new({:name => "Plays", :amount => 7.50, :date => '2015-01-22'})
+      plays_expense.save()
+      plays_expense.join(entertainment)
+      expect(burgers_expense.get_categories()).to(eq([food, entertainment]))
+    end
+  end
+
+  describe(".find") do
+    it("finds a expense based on a expense_id") do
+      movies_expense = Expense.new({:name => "Movies", :amount => 2.50, :date => '2015-01-22'})
+      movies_expense.save()
+      burritos_expense = Expense.new({:name => "Burritos", :amount => 4.50, :date => '2015-01-22'})
+      burritos_expense.save()
+      expect(Expense.find(movies_expense.id())).to(eq(movies_expense))
+    end
+  end
+
+
   # describe(".clear") do
   #   it("clears the trains database of all expenses in the expenses table") do
   #     test_1 = Expense.new({:name => "Burgers"})
@@ -72,16 +106,7 @@ describe(Expense) do
   #   end
   # end
   #
-  # describe(".find") do
-  #   it("finds a expense based on a expense_id") do
-  #     test_1 = Expense.new({:name => "Burgers"})
-  #     test_1.save()
-  #     test_2 = Expense.new({:name => "Movies"})
-  #     test_2.save()
-  #     expect(Expense.find(test_1.id())).to(eq(test_1))
-  #   end
-  # end
-  #
+
 
   #
   # describe("#list_category_names") do
