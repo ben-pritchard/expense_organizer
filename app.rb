@@ -31,6 +31,5 @@ post("/add") do
   @expense = Expense.new({:name => name, :amount => amount, :date => date})
   @expense.save()
   @expense.join(@category)
-binding.pry
   redirect("/")
 end
