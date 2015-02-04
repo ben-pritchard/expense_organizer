@@ -1,12 +1,7 @@
-require('sinatra')
-require('sinatra/reloader')
+require("bundler/setup")
 also_reload('./lib/**/*.rb')
-require('./lib/category')
-require('./lib/expense')
-require('pry')
-require('pg')
-
-DB = PG.connect({:dbname => 'budget'})
+Bundler.require(:default)
+Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
 get("/") do
   @expenses = Expense.all()

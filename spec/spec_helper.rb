@@ -1,14 +1,17 @@
-require('rspec')
-require('expense')
-require('category')
-require('pry')
-require('pg')
-
-DB = PG.connect({:dbname => 'budget_test'})
+ENV['RACK_ENV'] = 'test'
+require("bundler/setup")
+Bundler.require(:default, :test)
+Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each { |file| require file }
 
 RSpec.configure do |config|
+
   config.after(:each) do
-    DB.exec("DELETE FROM expenses *;")
-    DB.exec("DELETE FROM categories *;")
+    Expense.all().each() do |expense|
+      expense.destroy()
+    end
+    Category.all().each() do |category|
+      category.destroy()
+    end
   end
+
 end

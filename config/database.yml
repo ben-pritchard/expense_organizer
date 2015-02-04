@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  database: budget_development
+  template: template0
+
+test:
+  adapter: postgresql
+  database: budget_test
+  template: template0
