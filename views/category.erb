@@ -1,0 +1,16 @@
+<h1>Expenses in your <%= @found_category.name %> category:</h1>
+
+<div class = "col-md-6">
+
+  <% if @found_category.expenses.any?() %>
+  <ul>
+    <% @found_category.expenses.each() do |expense_id| %>
+    <% expense = Expense.find(expense_id) %>
+    <li><a href = "/expense/<%= expense.id() %>"><%= expense.name() %></a></li>
+    <% end %>
+  </ul>
+  <% else %>
+  <p>There are no categories yet.</p>
+  <% end %>
+
+</div>
